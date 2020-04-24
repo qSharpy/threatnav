@@ -16,3 +16,7 @@ add-apt-repository -y ppa:linuxuprising/java
 sudo apt-get update
 
 apt install -y openjdk-11-jre-headless
+
+apt-get update && sudo apt-get install logstash=1:7.6.2-1
+
+apt-get update && sudo apt-get install filebeat=7.6.2
