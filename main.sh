@@ -1,3 +1,3 @@
 ls -ltrha
 
-ls
+ls -a
