@@ -7,3 +7,12 @@ sudo apt-get update && sudo apt-get install elasticsearch=7.6.2
 
 apt-get update && sudo apt-get install kibana=7.6.2
 
+sudo apt-get install -y software-properties-common
+
+apt-get update
+
+add-apt-repository -y ppa:linuxuprising/java
+
+sudo apt-get update
+
+apt install -y openjdk-11-jre-headless
