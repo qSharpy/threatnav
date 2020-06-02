@@ -37,11 +37,23 @@ apt-get update && apt-get install filebeat=7.6.2
 echo -e "\e[7muncomment from kibana with sed\e[0m"
 sed -i '/elasticsearch.hosts/s/^#//g' /etc/kibana/kibana.yml
 
+#enabling filebeat
+echo -e "\e[7menable service filebeat\e[0m"
+systemctl enable filebeat
+
 #starting elk
+echo -e "\e[7menable service elastic\e[0m"
+systemctl enable elasticsearch
 echo -e "\e[7mstart service elastic\e[0m"
 systemctl start elasticsearch
+
+echo -e "\e[7menable service kibana\e[0m"
+systemctl start kibana
 echo -e "\e[7mstart service kibana\e[0m"
 systemctl start kibana
+
+echo -e "\e[7menable service logstash\e[0m"
+systemctl enable logstash
 echo -e "\e[7mstart service logstash\e[0m"
 systemctl start logstash
 
@@ -67,9 +79,13 @@ echo -e "\e[7mrestart kibana\e[0m"
 systemctl restart kibana
 
 #setting up credentials in kibana.yml
-#echo -e "\e[7msetting credentials in kibana.yml\e[0m"
-#sed -i '/^#elasticsearch.username.*/a elasticsearch.username: "kibana"' /etc/kibana/kibana.yml
-#sed -i '/^#elasticsearch.password.*/a elasticsearch.password: "#kibana2020PBL"' /etc/kibana/kibana.yml
+echo -e "\e[7msetting credentials in kibana.yml\e[0m"
+sed -i '/^#elasticsearch.username.*/a elasticsearch.username: "kibana"' /etc/kibana/kibana.yml
+sed -i '/^#elasticsearch.password.*/a elasticsearch.password: "#kibana2020PBL"' /etc/kibana/kibana.yml
+
+echo -e "\e[7mrestart kibana\e[0m"
+systemctl restart kibana
+
 
 echo -e "\e[7mstop logstash\e[0m"
 systemctl stop logstash
@@ -86,6 +102,7 @@ printf "y" | /usr/share/logstash/bin/logstash-keystore --path.settings /etc/logs
 echo -e "\e[7madd logstash keystore user and pass\e[0m"
 printf "elastic" | /usr/share/logstash/bin/logstash-keystore --path.settings /etc/logstash add ES_USER
 printf "#elastic2020PBL" | /usr/share/logstash/bin/logstash-keystore --path.settings /etc/logstash add ES_PWD
+
 
 echo -e "\e[7mmake new conf file in /etc/logstash/conf.d\e[0m"
 cp ./zeek-logstash-pipeline.conf /etc/logstash/conf.d/
@@ -117,11 +134,20 @@ cp ./zeek.yml /etc/filebeat/modules.d/zeek.yml
 echo -e "\e[7mstart logstash\e[0m"
 systemctl start logstash
 
+echo -e "\e[7mbackup filebeat.yml\e[0m"
+mv /etc/filebeat/filebeat.yml /etc/filebeat/filebeat.yml.backup
+
+echo -e "\e[7mcopy yara edit over filebeat.yml\e[0m"
+cp ./filebeat.yml /etc/filebeat/filebeat.yml
+
 echo -e "\e[7mstart ingestion from filebeat\e[0m"
 systemctl start filebeat
 
-apt-get install -y nginx apache2-utils
+echo -e "\e[7munzip ngrok\e[0m"
+unzip ngrok-stable-linux-amd64.zip
 
+echo -e "\e[7minstall nginx\e[0m"
+apt-get install -y nginx apache2-utils
 
 
 #https://www.youtube.com/watch?v=piFQhOPu0CY&t=804s
@@ -146,13 +172,6 @@ openssl req -config /etc/ssl/openssl.cnf -x509 -days 3650 -batch -nodes -newkey 
 printf "#elastic2020PBL" | htpasswd -c /etc/nginx/htpasswd.users elastic
 
 truncate -s 0 /etc/nginx/sites-available/default
-
-./ngrok http 5601 > /dev/null &
-[1] 28368
-
-
-./ngrok http 8443 > /dev/null &
-[1] 28474
 
 
 #https://discuss.elastic.co/t/how-to-create-build-in-user-without-interactive-mode-or-auto/183420/2
