@@ -149,6 +149,8 @@ unzip ngrok-stable-linux-amd64.zip
 echo -e "\e[7minstall nginx\e[0m"
 apt-get install -y nginx apache2-utils
 
+echo -e "\e[7minstall git\e[0m"
+apt install git -y
 
 #https://www.youtube.com/watch?v=piFQhOPu0CY&t=804s
 watch above
