@@ -144,8 +144,8 @@ echo -e "\e[7mmake elasticsearch yara.results index mapping template\e[0m"
 curl -X PUT -u elastic:#elastic2020PBL "localhost:9200/_template/template_1?pretty" -H 'Content-Type: application/json' -d'{"index_patterns":["yara_results"],"settings":{"number_of_shards":1},"mappings":{"properties":{"filename":{"type":"keyword"},"sent_over":{"type":"keyword"},"Yara_results":{"type":"nested","properties":{"rule":{"type":"keyword"},"namespace":{"type":"keyword"},"tags":{"type":"keyword"},"meta":{"type":"nested","properties":{"author":{"type":"keyword"},"original_author":{"type":"keyword"},"source":{"type":"keyword"}}}}}}}}'
 
 echo -e "\e[7mcreate yara_results index\e[0m"
+echo -e "\e[7myara_results will take the mapping from the above template\e[0m"
 curl -X PUT -u elastic:#elastic2020PBL "localhost:9200/yara_results?pretty"
-echo -e "\e[7myara_results will take the mapping from the template\e[0m"
 
 echo -e "\e[7mstart ingestion from filebeat\e[0m"
 systemctl start filebeat
@@ -153,35 +153,36 @@ systemctl start filebeat
 echo -e "\e[7munzip ngrok\e[0m"
 unzip ngrok-stable-linux-amd64.zip
 
-echo -e "\e[7minstall nginx\e[0m"
-apt-get install -y nginx apache2-utils
-
 echo -e "\e[7minstall git\e[0m"
 apt install git -y
 
-#https://www.youtube.com/watch?v=piFQhOPu0CY&t=804s
-watch above
-
+echo -e "\e[7minstall nginx\e[0m"
+apt-get install -y nginx apache2-utils
 
 #creation of certs folders
 mkdir -p /etc/pki/tls/certs
 mkdir /etc/pki/tls/private
 
-#not working for some reason..?
-sed '/^[ v3_ca ].*/a subjectAltName = IP: 193.219.91.103' /etc/ssl/openssl.cnf
+echo -e "\e[7mremove RANDFILE=... from /etc/ssl/openssl.cnf\e[0m"
+sed -i '/RANDFILE/d' /etc/ssl/openssl.cnf
 
-cd /etc/pki/tls
+echo -e "\e[7mgetting IP of machine\e[0m"
+IPv4=`dig +short myip.opendns.com @resolver1.opendns.com`
+echo "$IPv4"
 
+echo -e "\e[7madding IP to /etc/ssl/openssl.cnf\e[0m"
+sed -i '227 a subjectAltName = IP: '"$IPv4" /etc/ssl/openssl.cnf
 
-#ERROR
-#random number generator:RAND_load_file:Cannot open file:../crypto/rand/randfile.c:88:Filename=/root/.rnd
-openssl req -config /etc/ssl/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:4096 -keyout private/ELK-Stack.key -out certs/ELK-Stack.crt
+echo -e "\e[7mcreate new certificate for /etc/ssl/openssl.cnf\e[0m"
+openssl req -config /etc/ssl/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:4096 -keyout /etc/pki/tls/private/ELK-Stack.key -out /etc/pki/tls/certs/ELK-Stack.crt
 
+echo -e "\e[7msetting up htpasswd credentials for yaraui login\e[0m"
+htpasswd -b /etc/nginx/htpasswd.users elastic "#elastic2020PBL"
+htpasswd -b /etc/nginx/htpasswd.users pblteacher QWERTY553
 
-printf "#elastic2020PBL" | htpasswd -c /etc/nginx/htpasswd.users elastic
-
-truncate -s 0 /etc/nginx/sites-available/default
-
+echo -e "\e[7mlinking htpasswd credentials to /etc/nginx/sites-available/yaraui\e[0m"
+sed -i '/server_name/ a \ \ \ \ auth_basic_user_file /etc/nginx/htpasswd.users;' /etc/nginx/sites-available/yaraui
+sed -i '/server_name/ a \ \ \ \ auth_basic "Restricted Access";' /etc/nginx/sites-available/yaraui
 
 #https://discuss.elastic.co/t/how-to-create-build-in-user-without-interactive-mode-or-auto/183420/2
 
