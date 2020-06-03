@@ -1,0 +1,119 @@
+# Module: zeek
+# Docs: https://www.elastic.co/guide/en/beats/filebeat/7.x/filebeat-module-zeek.html
+
+- module: zeek
+  capture_loss:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/capture_loss.log", "/usr/local/zeek/logs/lab/*.capture_loss.json" ]
+  connection:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/conn.log", "/usr/local/zeek/logs/lab/*.conn.json" ]
+  dce_rpc:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/dce_rpc.log", "/usr/local/zeek/logs/lab/*.dce_rpc.json" ]
+  dhcp:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/dce_rpc.log", "/usr/local/zeek/logs/lab/*.dce_rpc.json" ]
+  dnp3:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/dnp3.log", "/usr/local/zeek/logs/lab/*.dnp3.json" ]
+  dns:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/dns.log", "/usr/local/zeek/logs/lab/*.dns.json" ]
+  dpd:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/dpd.log", "/usr/local/zeek/logs/lab/*.dpd.json" ]
+  files:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/files.log", "/usr/local/zeek/logs/lab/*.files.json" ]
+  ftp:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/ftp.log", "/usr/local/zeek/logs/lab/*.ftp.json" ]
+  http:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/http.log", "/usr/local/zeek/logs/lab/*.http.json" ]
+  intel:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/intel.log", "/usr/local/zeek/logs/lab/*.intel.json" ]
+  irc:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/irc.log", "/usr/local/zeek/logs/lab/*.irc.json" ]
+  kerberos:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/kerberos.log", "/usr/local/zeek/logs/lab/*.conn.json" ]
+  modbus:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/modbus.log", "/usr/local/zeek/logs/lab/*.modbus.json" ]
+  mysql:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/mysql.log", "/usr/local/zeek/logs/lab/*.mysql.json" ]
+  notice:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/notice.log", "/usr/local/zeek/logs/lab/*.notice.json" ]
+  ntlm:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/ntlm.log", "/usr/local/zeek/logs/lab/*.ntlm.json" ]
+  ocsp:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/ocsp.log", "/usr/local/zeek/logs/lab/*.ocsp.json" ]
+  pe:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/pe.log", "/usr/local/zeek/logs/lab/*.pe.json" ]
+  radius:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/radius.log", "/usr/local/zeek/logs/lab/*.radius.json" ]
+  rdp:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/rdp.log", "/usr/local/zeek/logs/lab/*.rdp.json" ]
+  rfb:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/rfb.log", "/usr/local/zeek/logs/lab/*.rfb.json" ]
+  sip:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/sip.log", "/usr/local/zeek/logs/lab/*.sip.json" ]
+  smb_cmd:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/smb_cmd.log", "/usr/local/zeek/logs/lab/*.smb_cmd.json" ]
+  smb_files:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/smb_files.log", "/usr/local/zeek/logs/lab/*.smb_files.json" ]
+  smb_mapping:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/smb_mapping.log", "/usr/local/zeek/logs/lab/*.smb_mapping.json" ]
+  smtp:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/smtp.log", "/usr/local/zeek/logs/lab/*.smtp.json" ]
+  snmp:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/snmp.log", "/usr/local/zeek/logs/lab/*.snmp.json" ]
+  socks:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/socks.log", "/usr/local/zeek/logs/lab/*.socks.json" ]
+  ssh:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/ssh.log", "/usr/local/zeek/logs/lab/*.ssh.json" ]
+  ssl:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/ssl.log", "/usr/local/zeek/logs/lab/*.ssl.json" ]
+  stats:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/stats.log", "/usr/local/zeek/logs/lab/*.stats.json" ]
+  syslog:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/syslog.log", "/usr/local/zeek/logs/lab/*.syslog.json" ]
+  traceroute:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/traceroute.log", "/usr/local/zeek/logs/lab/*.traceroute.json" ]
+  tunnel:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/tunnel.log", "/usr/local/zeek/logs/lab/*.tunnel.json" ]
+  weird:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/weird.log", "/usr/local/zeek/logs/lab/*.weird.json" ]
+  x509:
+    enabled: true
+    var.paths: [ "/usr/local/zeek/logs/current/x509.log", "/usr/local/zeek/logs/lab/*.x509.json" ]
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
