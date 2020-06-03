@@ -140,6 +140,13 @@ mv /etc/filebeat/filebeat.yml /etc/filebeat/filebeat.yml.backup
 echo -e "\e[7mcopy yara edit over filebeat.yml\e[0m"
 cp ./filebeat.yml /etc/filebeat/filebeat.yml
 
+echo -e "\e[7mmake elasticsearch yara.results index mapping template\e[0m"
+curl -X PUT -u elastic:#elastic2020PBL "localhost:9200/_template/template_1?pretty" -H 'Content-Type: application/json' -d'{"index_patterns":["yara_results"],"settings":{"number_of_shards":1},"mappings":{"properties":{"filename":{"type":"keyword"},"sent_over":{"type":"keyword"},"Yara_results":{"type":"nested","properties":{"rule":{"type":"keyword"},"namespace":{"type":"keyword"},"tags":{"type":"keyword"},"meta":{"type":"nested","properties":{"author":{"type":"keyword"},"original_author":{"type":"keyword"},"source":{"type":"keyword"}}}}}}}}'
+
+echo -e "\e[7mcreate yara_results index\e[0m"
+curl -X PUT -u elastic:#elastic2020PBL "localhost:9200/yara_results?pretty"
+echo -e "\e[7myara_results will take the mapping from the template\e[0m"
+
 echo -e "\e[7mstart ingestion from filebeat\e[0m"
 systemctl start filebeat
 
