@@ -62,16 +62,17 @@ echo -e "\e[7menable elastic security\e[0m"
 echo 'xpack.security.enabled: true' >> /etc/elasticsearch/elasticsearch.yml
 echo 'discovery.type: single-node' >> /etc/elasticsearch/elasticsearch.yml
 
-echo -e "\e[7mrestart service elastic\e[0m"
+echo -e "\e[7mrestart service elastic - enable xpack\e[0m"
 systemctl restart elasticsearch
-echo -e "\e[7msleep 60\e[0m"
-sleep 60
 
 #echo -e "\e[7minteractive password setup\e[0m"
 #/usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
 
 echo -e "\e[7madd elastic bootstrap password\e[0m"
 printf "#elastic2020PBL" | /usr/share/elasticsearch/bin/elasticsearch-keystore add "bootstrap.password"
+
+echo -e "\e[7mrestart service elastic - bootstrap password\e[0m"
+systemctl restart elasticsearch
 
 echo -e "\e[7mpassword setup\e[0m"
 curl -u elastic:#elastic2020PBL -XPOST "http://localhost:9200/_xpack/security/user/kibana/_password" -d'{"password":"#kibana2020PBL"}' -H "Content-Type: application/json"
