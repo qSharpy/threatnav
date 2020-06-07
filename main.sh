@@ -74,6 +74,8 @@ printf "#elastic2020PBL" | /usr/share/elasticsearch/bin/elasticsearch-keystore a
 echo -e "\e[7mrestart service elastic - bootstrap password\e[0m"
 systemctl restart elasticsearch
 
+sleep 60
+
 echo -e "\e[7mpassword setup\e[0m"
 curl -u elastic:#elastic2020PBL -XPOST "http://localhost:9200/_xpack/security/user/kibana/_password" -d'{"password":"#kibana2020PBL"}' -H "Content-Type: application/json"
 curl -u elastic:#elastic2020PBL -XPOST "http://localhost:9200/_xpack/security/user/logstash_system/_password" -d'{"password":"#logstash2020PBL"}' -H "Content-Type: application/json"
