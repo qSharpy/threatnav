@@ -64,10 +64,11 @@ echo 'discovery.type: single-node' >> /etc/elasticsearch/elasticsearch.yml
 
 echo -e "\e[7mrestart service elastic\e[0m"
 systemctl restart elasticsearch
+echo -e "\e[7msleep 60\e[0m"
+sleep 60
 
 #echo -e "\e[7minteractive password setup\e[0m"
 #/usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
-
 
 echo -e "\e[7madd elastic bootstrap password\e[0m"
 printf "#elastic2020PBL" | /usr/share/elasticsearch/bin/elasticsearch-keystore add "bootstrap.password"
