@@ -65,8 +65,20 @@ echo 'discovery.type: single-node' >> /etc/elasticsearch/elasticsearch.yml
 echo -e "\e[7mrestart service elastic\e[0m"
 systemctl restart elasticsearch
 
-echo -e "\e[7minteractive password setup\e[0m"
-/usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
+#echo -e "\e[7minteractive password setup\e[0m"
+#/usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive
+
+
+echo -e "\e[7madd elastic bootstrap password\e[0m"
+printf "#elastic2020PBL" | /usr/share/elasticsearch/bin/elasticsearch-keystore add "bootstrap.password"
+
+echo -e "\e[7mpassword setup\e[0m"
+curl -u elastic:#elastic2020PBL -XPOST "http://localhost:9200/_xpack/security/user/kibana/_password" -d'{"password":"#kibana2020PBL"}' -H "Content-Type: application/json"
+curl -u elastic:#elastic2020PBL -XPOST "http://localhost:9200/_xpack/security/user/logstash_system/_password" -d'{"password":"#logstash2020PBL"}' -H "Content-Type: application/json"
+curl -u elastic:#elastic2020PBL -XPOST "http://localhost:9200/_xpack/security/user/apm_system/_password" -d'{"password":"#apm-system2020PBL"}' -H "Content-Type: application/json"
+curl -u elastic:#elastic2020PBL -XPOST "http://localhost:9200/_xpack/security/user/beats_system/_password" -d'{"password":"#beats2020PBL"}' -H "Content-Type: application/json"
+curl -u elastic:#elastic2020PBL -XPOST "http://localhost:9200/_xpack/security/user/elastic/_password" -d'{"password":"#elastic2020PBL"}' -H "Content-Type: application/json"
+
 
 echo -e "\e[7mcreating kibana keystore\e[0m"
 /usr/share/kibana/bin/kibana-keystore create --allow-root
