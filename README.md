@@ -7,4 +7,4 @@ later processed and sent for storing in the ELK.
 
 Based on the findings of the system, there will be the possibility of creating easy to analyze visualizations of the network traffic and the possibility of tuning the YARA rules engine for later use.
 
-![alt text](https://imgur.com/jIKCU7h)
+![alt text](https://i.imgur.com/jIKCU7h.jpg)
